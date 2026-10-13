@@ -32,7 +32,7 @@ canvas#c:active{cursor:grabbing}
 .btn:hover{border-color:rgba(255,210,90,.6)}
 
 /* audiobook panel */
-#book{position:fixed;left:12px;bottom:12px;width:min(380px,calc(100vw - 24px));max-height:46vh;display:flex;flex-direction:column;overflow:hidden}
+#book{position:fixed;left:12px;bottom:58px;width:min(380px,calc(100vw - 24px));max-height:46vh;display:flex;flex-direction:column;overflow:hidden}
 #bookHead{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer}
 #bookHead h3{font-family:var(--serif);font-size:17px;font-weight:600;flex:1}
 #bookDates{font-size:11px;color:var(--gold);letter-spacing:.05em;padding:0 14px;margin-top:8px}
@@ -172,6 +172,10 @@ body.touring #bannerTitle{font-size:clamp(28px,3.4vw,58px)}
 body.touring #bannerText{font-size:clamp(20px,2.3vw,40px);line-height:1.36}
 body.touring #nextEra{display:none}
 @media (max-width:900px){#tourBtn{top:118px}}
+#fsBtn{position:fixed;left:12px;bottom:12px;z-index:60;height:36px;padding:0 14px;display:flex;align-items:center;gap:8px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;background:rgba(18,22,19,.8);border:1px solid var(--line);border-radius:10px;backdrop-filter:blur(8px);opacity:.85;transition:opacity .2s,border-color .2s}
+#fsBtn:hover{opacity:1;border-color:rgba(255,210,90,.7)}
+#fsBtn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2}
+body.touring #fsBtn{opacity:0;pointer-events:none}
 </style>
 </head>
 <body>
@@ -238,6 +242,12 @@ body.touring #nextEra{display:none}
   </div>
 </div>
 
+<button id="fsBtn" title="Full screen (F11)"><svg viewBox="0 0 16 16"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg><span id="fsTxt">Full screen</span></button>
+<script>(function(){var b=document.getElementById('fsBtn'),t=document.getElementById('fsTxt'),d=document;
+function on(){return !!(d.fullscreenElement||d.webkitFullscreenElement)}
+function sync(){t.textContent=on()?'Exit full screen':'Full screen'}
+b.addEventListener('click',function(){var e=d.documentElement;try{if(on()){(d.exitFullscreen||d.webkitExitFullscreen).call(d)}else{var p=(e.requestFullscreen||e.webkitRequestFullscreen).call(e);if(p&&p.catch)p.catch(function(){})}}catch(x){}b.blur()});
+d.addEventListener('fullscreenchange',sync);d.addEventListener('webkitfullscreenchange',sync);})();</script>
 <script id="src-three" type="text/plain">/**
  * @license
  * Copyright 2010-2023 Three.js Authors
