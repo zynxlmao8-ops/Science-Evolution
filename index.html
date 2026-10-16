@@ -2146,7 +2146,7 @@ function buildWorld(era) {
     const where = def.where;
     const [x, z, h] = findSpot(where, def.radius + 6);
     const obj = CREATURES[def.build]();
-    if (def.plant) { const bb = new THREE.Box3().setFromObject(obj), sz = bb.getSize(new THREE.Vector3()); def.look = Math.max(def.view ?? 0, def.radius, sz.y * 1.55, Math.max(sz.x, sz.z) * 1.5); }
+    if (def.plant) { const bb = new THREE.Box3().setFromObject(obj), sz = bb.getSize(new THREE.Vector3()); def.look = Math.max(def.view ?? 0, def.radius, sz.y * 1.55, Math.max(sz.x, sz.z) * 1.5); def.rng = Math.max(5, Math.max(sz.x, sz.z) / 2 + 6); def.mid = sz.y * 0.35; }
     obj.rotation.order = 'YXZ';
     let y = h;
     if (where === 'deep') y = clamp(lerp(W, h, 0.55), h + 2.4, W - 1.6);
@@ -2449,13 +2449,13 @@ function updateHud() {
 function nearSpecimen() {
   if (!world) return null;
   if (S.free && S.goFocus && world.specimens.includes(S.goFocus.s) && camera.position.distanceTo(S.goFocus.p) < 5) {
-    const f = S.goFocus.s, fl = Math.max(f.def.radius * 1.25, (f.def.view ?? f.def.radius) * 1.25, f.def.plant ? f.def.look * 1.35 : 0);
-    if (camera.position.distanceTo(f.obj.position) < fl) return f;
+    const f = S.goFocus.s, fl = f.def.plant ? f.def.rng : Math.max(f.def.radius * 1.25, (f.def.view ?? f.def.radius) * 1.25);
+    if (Math.hypot(camera.position.x - f.obj.position.x, camera.position.y - (f.obj.position.y + (f.def.mid || 0)), camera.position.z - f.obj.position.z) < fl) return f;
   }
   let best = null, bd = 1e9;
   for (const s of world.specimens) {
     let d, lim;
-    if (S.free) { d = camera.position.distanceTo(s.obj.position); lim = Math.max(s.def.radius * 1.25, (s.def.view ?? s.def.radius) * 1.25); if (s.def.plant) lim = Math.max(lim, s.def.look * 1.35); }
+    if (S.free) { d = camera.position.distanceTo(s.obj.position); lim = Math.max(s.def.radius * 1.25, (s.def.view ?? s.def.radius) * 1.25); if (s.def.plant) { d = Math.hypot(camera.position.x - s.obj.position.x, camera.position.y - (s.obj.position.y + s.def.mid), camera.position.z - s.obj.position.z); lim = s.def.rng; } }
     else { d = Math.hypot(s.home.x - player.position.x, s.home.z - player.position.z); lim = s.def.radius; }
     if (d < lim && d < bd) { bd = d; best = s; }
   }
@@ -2705,7 +2705,7 @@ function goTo(s) {
   setFree(true);
   const o = s.obj; let vd = s.def.view ?? s.def.radius; const WL = world.W, aq = isAqua(s), air = s.def.where === 'air';
   let plantH = 0;
-  if (s.def.plant) { const bb = new THREE.Box3().setFromObject(o), sz = bb.getSize(new THREE.Vector3()); plantH = sz.y; vd = Math.max(vd, s.def.look || 0, sz.y * 1.55, Math.max(sz.x, sz.z) * 1.5); }
+  if (s.def.plant) { const bb = new THREE.Box3().setFromObject(o), sz = bb.getSize(new THREE.Vector3()); plantH = sz.y; vd = s.def.rng * 0.85; }
   const center = o.position.clone(), base = (o.rotation.y || 0) + 0.9, p1 = new THREE.Vector3();
   const ang = (k) => base + (k % 2 ? -1 : 1) * Math.ceil(k / 2) * 0.55;
   if (aq) {
