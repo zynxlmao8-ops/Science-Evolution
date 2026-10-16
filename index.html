@@ -202,7 +202,7 @@ body.touring #fsBtn{opacity:0;pointer-events:none}
   <div id="tabs" class="glass"></div>
   <div id="total" class="glass"></div>
   <div class="spacer"></div>
-  <button id="listBtn" class="btn">📍 Animals <small>(L)</small></button>
+  <button id="listBtn" class="btn">📍 Animals &amp; plants <small>(L)</small></button>
   <button id="sfxBtn" class="btn">🔈 Sound effects on</button>
   <button id="muteBtn" class="btn">🔊 Narration on</button>
   <button id="restartBtn" class="btn">↺ Restart</button>
@@ -259,9 +259,9 @@ body.touring #fsBtn{opacity:0;pointer-events:none}
     <div class="cta"><button id="startBtn">Begin the journey <b>&#9654;</b></button><div class="hint">After you start, press <kbd>T</kbd><br>for the automatic tour</div></div>
   </div>
   <div class="tl">
-    <div class="era" style="--c:#5fb386;--i:0"><small>ERA 1</small><h3>Paleozoic</h3><p>539&ndash;252 million years ago &middot; 12 animals</p></div>
-    <div class="era" style="--c:#e0a04a;--i:1"><small>ERA 2</small><h3>Mesozoic</h3><p>252&ndash;66 million years ago &middot; 14 animals</p></div>
-    <div class="era" style="--c:#6aa2e6;--i:2"><small>ERA 3</small><h3>Cenozoic</h3><p>66 million years ago to today &middot; 12 animals</p></div>
+    <div class="era" style="--c:#5fb386;--i:0"><small>ERA 1</small><h3>Paleozoic</h3><p>539&ndash;252 Mya &middot; 11 animals &middot; 6 plants</p></div>
+    <div class="era" style="--c:#e0a04a;--i:1"><small>ERA 2</small><h3>Mesozoic</h3><p>252&ndash;66 Mya &middot; 13 animals &middot; 6 plants</p></div>
+    <div class="era" style="--c:#6aa2e6;--i:2"><small>ERA 3</small><h3>Cenozoic</h3><p>66 Mya to today &middot; 11 animals &middot; 6 plants</p></div>
   </div>
 </div>
 
@@ -333,12 +333,17 @@ const ERAS = [
       { id: 'eur', name: 'Sea Scorpion (Eurypterid)', where: 'seabed', build: 'eurypterid', radius: 8, walk: { R: 3.5, s: 0.6 }, fact: 'Eurypterids, the sea scorpions, were large predatory arthropods of Paleozoic waters. The biggest species grew longer than a person.' },
       { id: 'fish', name: 'Armoured Fish (Dunkleosteus)', where: 'deep', build: 'armoredFish', radius: 10, orbit: { r: 7, s: 0.35, y: 0 }, fact: 'Fish became more diverse through the Paleozoic. Some, like this armoured predator, wore heavy bony plates and ruled the seas long before any animal walked on land.' },
       { id: 'tik', name: 'Tiktaalik', where: 'shore', build: 'tiktaalik', radius: 8, fact: 'Tiktaalik was a fish with a flexible neck and sturdy fins containing wrist-like bones. It is a snapshot of life moving from water toward land, the big change of the Paleozoic.' },
-      { id: 'lyc', name: 'Giant Club-Moss Tree', where: 'land', build: 'lycopodTree', radius: 8, fact: 'Plants began growing on land during this era. Vast forests of towering plants like this one developed, eventually contributing to the coal deposits we dig up today.' },
+      { id: 'lyc', name: 'Giant Club-Moss Tree', where: 'land', build: 'lycopodTree', radius: 8, plant: true, fact: 'Plants began growing on land during this era. Vast forests of towering plants like this one developed, eventually contributing to the coal deposits we dig up today.' },
       { id: 'dra', name: 'Giant Dragonfly', where: 'air', build: 'dragonfly', radius: 9, orbit: { r: 4, s: 0.9, y: 5 }, fact: 'Insects followed plants onto the land. Giant dragonfly-like insects zipped through the humid forests of the late Paleozoic.' },
       { id: 'art', name: 'Arthropleura', where: 'land', build: 'arthropleura', radius: 9, walk: { R: 4, s: 0.8 }, fact: 'Arthropleura was a giant millipede-like arthropod that crawled through the coal-forming forests. At over two metres long, it is among the largest land invertebrates ever.' },
       { id: 'amp', name: 'Early Amphibian', where: 'shore', build: 'amphibian', radius: 8, walk: { R: 3, s: 0.6 }, fact: 'Amphibians appeared as life crept from water onto land. They were the in-between step on the road from fish to land animals.' },
       { id: 'rep', name: 'First Reptile', where: 'land', build: 'earlyReptile', radius: 7, walk: { R: 4, s: 1.6 }, fact: 'The first reptiles appeared late in the Paleozoic. Their descendants would go on to dominate the next era.' },
       { id: 'dim', name: 'Dimetrodon', where: 'land', build: 'dimetrodon', radius: 9, walk: { R: 5, s: 0.9 }, fact: 'Dimetrodon is often mistaken for a dinosaur, but it lived long before them, in the Permian. It belonged to the lineage that later led to mammals. Its tall sail may have helped regulate temperature or been used for display.' },
+      { id: 'alg', name: 'Green Algae (Seaweed)', where: 'seabed', build: 'algae', radius: 8, plant: true, fact: 'Algae are some of the oldest plant-like life. Long before plants reached land, green algae grew in the shallow Paleozoic seas, making oxygen and feeding the first ocean animals. Their descendants later gave rise to land plants.' },
+      { id: 'coo', name: 'Cooksonia', where: 'shore', build: 'cooksonia', radius: 8, plant: true, fact: 'Cooksonia is among the earliest known land plants with vascular tissue, living about 430 million years ago. It was only a few centimetres tall, with simple forked stems that ended in spore capsules, and it had no leaves or flowers. Here it is shown many times larger than life.' },
+      { id: 'cal', name: 'Giant Horsetail (Calamites)', where: 'land', build: 'calamites', radius: 9, plant: true, view: 14, fact: "Calamites grew in the coal-forming forests of the late Paleozoic. It was a giant relative of today's small horsetails, with a jointed hollow stem and rings of narrow leaves at every joint. It spread by spores, not seeds." },
+      { id: 'sfe', name: 'Seed Fern', where: 'land', build: 'seedFern', radius: 8, plant: true, fact: 'Seed ferns looked like ferns, but they reproduced with seeds instead of spores. They were an important step in plant evolution, and they filled the swampy forests of the Paleozoic.' },
+      { id: 'wal', name: 'Early Conifer (Walchia)', where: 'land', build: 'walchia', radius: 9, plant: true, view: 15, fact: 'The first conifers appeared late in the Paleozoic and spread as the climate grew drier. Their seeds grew in cones and could survive dry conditions far better than the spores of older plants.' },
     ],
   },
   {
@@ -370,7 +375,12 @@ const ERAS = [
       { id: 'amm', name: 'Ammonite', where: 'deep', build: 'ammonite', radius: 8, orbit: { r: 4, s: 0.25, y: 0 }, fact: 'Ammonites were shelled relatives of squid and octopus. They thrived in Mesozoic seas and disappeared in the same mass extinction that ended the dinosaurs.' },
       { id: 'mam', name: 'Early Mammal', where: 'land', build: 'shrew', radius: 6, walk: { R: 2.5, s: 1.2 }, fact: 'The first mammals appeared in this era. They were small, quiet and easy to overlook, but their descendants would inherit the planet.' },
       { id: 'arc', name: 'Early Bird (Archaeopteryx)', where: 'air', build: 'archaeopteryx', radius: 9, orbit: { r: 5, s: 0.7, y: 7 }, fact: 'The earliest birds appeared in the Mesozoic. Birds descend from dinosaurs, the only dinosaur lineage that survived the end of the era.' },
-      { id: 'flo', name: 'Flowering Plant', where: 'land', build: 'flower', radius: 6, fact: 'Flowering plants developed in this era and eventually spread across the world, changing landscapes forever.' },
+      { id: 'flo', name: 'Flowering Plant', where: 'land', build: 'flower', radius: 6, plant: true, fact: 'Flowering plants developed in this era and eventually spread across the world, changing landscapes forever.' },
+      { id: 'cyc', name: 'Cycad', where: 'land', build: 'cycad', radius: 9, plant: true, view: 12, fact: 'Cycads were so common in the Mesozoic that it is sometimes called the Age of Cycads. They had a stout trunk, a crown of tough fronds and large seed cones, and many plant-eating dinosaurs fed on them.' },
+      { id: 'gin', name: 'Ginkgo', where: 'land', build: 'ginkgo', radius: 9, plant: true, view: 13, fact: 'Ginkgo relatives spread across the world in the Mesozoic. Their fan-shaped leaves are still found on the ginkgo tree growing today, which is often called a living fossil because it has changed so little.' },
+      { id: 'ara', name: 'Monkey-puzzle Conifer (Araucaria)', where: 'land', build: 'araucaria', radius: 9, plant: true, view: 20, fact: 'Tall conifers like the Araucaria dominated Mesozoic forests. Their high crowns may have been food for long-necked dinosaurs such as Brachiosaurus, and their relatives still grow in the southern hemisphere.' },
+      { id: 'tfe', name: 'Tree Fern', where: 'land', build: 'treeFern', radius: 9, plant: true, view: 13, fact: 'Ferns thrived in the damp Mesozoic forests. Tree ferns grew a tall trunk topped with a crown of large fronds, and they gave shade to the small animals living beneath them.' },
+      { id: 'mag', name: 'Early Magnolia', where: 'land', build: 'magnolia', radius: 9, plant: true, view: 12, fact: "Magnolia-like trees are among the earliest flowering plants, which began to spread in the Cretaceous. Their large flowers attracted beetles, which carried pollen from flower to flower. This partnership changed the world's forests." },
     ],
   },
   {
@@ -398,9 +408,14 @@ const ERAS = [
       { id: 'wha', name: 'Whale', where: 'deep', build: 'whale', radius: 13, view: 24, orbit: { r: 8, s: 0.22, y: 0 }, fact: 'Some mammals evolved into whales, returning to the sea they came from.' },
       { id: 'bat', name: 'Bat', where: 'air', build: 'bat', radius: 9, orbit: { r: 5, s: 1.1, y: 6 }, fact: 'Some mammals evolved into bats, the only mammals able to truly fly.' },
       { id: 'pri', name: 'Early Primate', where: 'land', build: 'primate', radius: 7, fact: 'Some mammals evolved into primates, the group that later includes apes and humans.' },
-      { id: 'gra', name: 'Grassland', where: 'land', build: 'grassTuft', radius: 9, fact: 'Flowering plants spread and grasslands expanded, creating wide open habitats for grazing mammals.' },
+      { id: 'gra', name: 'Grassland', where: 'land', build: 'grassTuft', radius: 9, plant: true, fact: 'Flowering plants spread and grasslands expanded, creating wide open habitats for grazing mammals.' },
       { id: 'aus', name: 'Australopithecus', where: 'land', build: 'australopithecus', radius: 8, walk: { R: 4, s: 1.1 }, fact: 'Early human relatives like Australopithecus walked upright on two legs in Africa, long before modern humans appeared.' },
       { id: 'hum', name: 'Early Human', where: 'land', build: 'human', radius: 8, fact: 'Eventually, early humans appeared. Over time, modern humans developed and spread across the planet.' },
+      { id: 'pal', name: 'Palm Tree', where: 'land', build: 'palm', radius: 8, plant: true, view: 13, fact: 'Palms flourished in the warm early Cenozoic, when forests grew much farther north and south than they do today. Their tall trunks and large fronds still shade the tropics now.' },
+      { id: 'oak', name: 'Oak Tree', where: 'land', build: 'oak', radius: 9, plant: true, view: 13, fact: 'Broadleaf trees such as oaks spread widely after the dinosaurs were gone. As the world cooled they began to drop their leaves in winter, and their acorns fed many of the new mammals.' },
+      { id: 'red', name: 'Redwood', where: 'land', build: 'redwood', radius: 10, plant: true, view: 28, fact: 'Redwood relatives once grew across much of the northern world. The tallest redwoods alive today are the tallest trees on Earth, and living relatives like the dawn redwood show how little they have changed.' },
+      { id: 'dai', name: 'Daisy', where: 'land', build: 'daisy', radius: 7, plant: true, view: 12, fact: 'The daisy and sunflower family is one of the largest groups of flowering plants. It became widespread in the Cenozoic, alongside the bees and other insects that pollinate flowers.' },
+      { id: 'cac', name: 'Cactus', where: 'land', build: 'cactus', radius: 9, plant: true, view: 12, fact: 'As the climate dried in the Cenozoic, cacti evolved in the Americas. Their thick stems store water, and their spines are leaves that changed to protect the plant and shade it from the sun.' },
     ],
   },
 ];
@@ -1627,6 +1642,262 @@ CREATURES.australopithecus = () => {
 };
 
 /* ---------------------------------------------------------------------
+   PLANT SPECIMENS (inspectable, not part of the tour)
+   --------------------------------------------------------------------- */
+const PLANT_MAT = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.85, side: THREE.DoubleSide });
+function inst(geo, n, mat) { const m = new THREE.InstancedMesh(geo, mat || PLANT_MAT, n); m.castShadow = true; m.frustumCulled = false; m.userData.i = 0; return m; }
+const _pd = new THREE.Object3D(), _pc = new THREE.Color();
+function put(im, x, y, z, sx, sy, sz, ry, rx, rz, color) {
+  _pd.position.set(x, y, z); _pd.scale.set(sx, sy, sz); _pd.rotation.set(rx || 0, ry || 0, rz || 0); _pd.updateMatrix();
+  const i = im.userData.i++; im.setMatrixAt(i, _pd.matrix); _pc.set(color); im.setColorAt(i, _pc);
+}
+function fin(im) { im.count = im.userData.i; im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true; return im; }
+const FAN = (() => { const g = new THREE.CircleGeometry(1, 14, 0, 2.3); g.rotateX(-Math.PI / 2); g.rotateY(-1.15 + Math.PI / 2); return g; })();
+const mixc = (a, b, t) => new THREE.Color(a).lerp(new THREE.Color(b), t).getHex();
+
+/* a crown of arching fronds around (0, y0, 0). Leaflets are flattened ellipsoids along each rachis. */
+function fronds(g, o) {
+  const r = rng(o.seed || 3), n = o.n || 8, len = o.len || 3, nl = o.leaflets || 12;
+  const im = inst(sphereG, n * nl + 4);
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2 + r() * 0.4, e0 = (o.lift ?? 0.7) + (r() - 0.5) * 0.3, L = len * (0.85 + r() * 0.3);
+    const ca = Math.cos(a), sa = Math.sin(a);
+    let prev = null;
+    for (let k = 0; k <= 5; k++) {
+      const s = k / 5, rr = L * s * Math.cos(e0) , yy = o.y0 + L * (Math.sin(e0) * s - (o.droop ?? 0.9) * s * s * 0.5);
+      const p = [ca * rr, yy, sa * rr];
+      if (prev) g.add(limb(prev, p, 0.05 * (o.thick || 1) * (1.1 - s * 0.5), 0.045 * (o.thick || 1) * (1 - s * 0.6), o.rachis || 0x4a6b36));
+      prev = p;
+    }
+    for (let k = 1; k <= nl; k++) {
+      const s = k / nl, rr = L * s * Math.cos(e0), yy = o.y0 + L * (Math.sin(e0) * s - (o.droop ?? 0.9) * s * s * 0.5);
+      const ll = (o.ll || 0.5) * (0.35 + Math.sin(Math.PI * Math.min(1, s * 1.05)) * 0.75), jit = (r() - 0.5) * 0.3;
+      put(im, ca * rr, yy, sa * rr, ll, 0.04, o.lw || 0.1, -(a + Math.PI / 2) + jit, 0, 0, mixc(o.c1 || 0x4f8a3a, o.c2 || 0x6aa04a, r()));
+    }
+  }
+  g.add(fin(im));
+}
+
+/* ---------------- PALEOZOIC ---------------- */
+CREATURES.algae = () => {
+  const g = new THREE.Group(), r = rng(11);
+  g.add(at(ell(1.2, 0.35, 1.0, 0x7d7a6a, 1), 0, 0.2, 0));
+  const im = inst(sphereG, 16 * 7);
+  for (let i = 0; i < 16; i++) {
+    const a = r() * 6.28, rad = r() * 0.8, H = 2.4 + r() * 2.4, ph = r() * 6, col = mixc(0x2f8a4a, 0x8fcf5a, r());
+    for (let k = 0; k < 7; k++) {
+      const s = k / 6, x = Math.cos(a) * (rad + Math.sin(s * 2.4 + ph) * 0.35 * s), z = Math.sin(a) * (rad + Math.cos(s * 2.0 + ph) * 0.3 * s);
+      put(im, x, 0.3 + s * H, z, 0.26 + 0.1 * Math.sin(s * 3 + ph), H / 8.5, 0.04, a + s, 0, 0.2 * Math.sin(ph + s * 4), col);
+    }
+  }
+  g.add(fin(im)); g.scale.setScalar(1.2);
+  g.userData.update = (t) => { g.rotation.z = Math.sin(t * 0.8) * 0.04; g.rotation.x = Math.cos(t * 0.6) * 0.03; };
+  return g;
+};
+
+CREATURES.cooksonia = () => {
+  const g = new THREE.Group(), r = rng(21), stem = 0x6f9a4a, cap = 0xc9c070;
+  g.add(at(ell(3.2, 0.25, 3.2, 0x5f7a40, 1), 0, 0.1, 0));
+  for (let i = 0; i < 11; i++) {
+    const a = r() * 6.28, d = 0.3 + r() * 2.3, H = 1.6 + r() * 1.3, x = Math.cos(a) * d, z = Math.sin(a) * d;
+    const fy = H * 0.55, sp = 0.35 + r() * 0.25;
+    g.add(limb([x, 0.1, z], [x, fy, z], 0.07, 0.055, stem));
+    for (const s of [-1, 1]) {
+      const tx = x + Math.cos(a + 1.57) * s * sp, tz = z + Math.sin(a + 1.57) * s * sp;
+      g.add(limb([x, fy, z], [tx, H, tz], 0.05, 0.04, stem));
+      g.add(at(ell(0.13, 0.18, 0.13, cap, 0.7), tx, H + 0.08, tz));
+    }
+  }
+  g.scale.setScalar(1.5);
+  g.userData.update = (t) => { g.rotation.z = Math.sin(t * 1.1) * 0.015; };
+  return g;
+};
+
+CREATURES.calamites = () => {
+  const g = new THREE.Group(), r = rng(31);
+  const leaves = inst(new THREE.ConeGeometry(0.08, 1, 4), 3 * 12 * 14);
+  [[0, 0, 12], [2.2, 1.2, 9.5], [-2, 0.9, 10.5]].forEach(([x, z, H]) => {
+    const seg = Math.floor(H / 1.1);
+    for (let k = 0; k < seg; k++) {
+      const y0 = k * 1.1, rad = 0.38 - k * 0.012;
+      g.add(at(cyl(rad, rad * 0.97, 1.0, k % 2 ? 0x7a8a4a : 0x6f7f43, 10), x, y0 + 0.5, z));
+      g.add(at(cyl(rad * 1.18, rad * 1.18, 0.1, 0x4f5a30, 10), x, y0 + 1.05, z));
+      if (k >= 2) for (let m = 0; m < 14; m++) {
+        const a = (m / 14) * 6.28 + k * 0.5, L = 2.0 + (k / seg) * 0.9;
+        put(leaves, x + Math.cos(a) * rad, y0 + 1.05, z + Math.sin(a) * rad, 1, L, 1, 0, Math.sin(a) * 1.0, -Math.cos(a) * 1.0 + 0, mixc(0x4f7a38, 0x7aa04a, r()));
+        leaves.userData.i;
+      }
+    }
+    g.add(at(cone(0.3, 0.9, 0x8a9a4a, 8), x, seg * 1.1 + 0.4, z));
+  });
+  fin(leaves);
+  g.add(leaves);
+  g.userData.update = (t) => { g.rotation.z = Math.sin(t * 0.7) * 0.012; };
+  return g;
+};
+
+CREATURES.seedFern = () => {
+  const g = new THREE.Group();
+  g.add(at(cyl(0.55, 0.4, 2.6, 0x6a5238, 10), 0, 1.3, 0));
+  for (let i = 0; i < 10; i++) g.add(at(cyl(0.56, 0.56, 0.08, 0x4e3b28, 10), 0, 0.25 + i * 0.25, 0));
+  fronds(g, { n: 11, len: 6.2, y0: 2.6, lift: 1.1, droop: 1.5, leaflets: 16, ll: 1.0, lw: 0.26, c1: 0x3f7a35, c2: 0x6fa047, seed: 5 });
+  for (let i = 0; i < 4; i++) { const a = i * 1.6 + 0.4; g.add(at(ell(0.16, 0.2, 0.16, 0x8a5a3a, 0.7), Math.cos(a) * 0.45, 1.5 + (i % 2) * 0.1, Math.sin(a) * 0.45)); }
+  g.userData.update = (t) => { g.rotation.z = Math.sin(t * 0.8) * 0.012; };
+  return g;
+};
+
+/* conifer builder: straight trunk with tiers of drooping branches (used by Walchia and the monkey-puzzle tree) */
+function coniferTree(o) {
+  const g = new THREE.Group(), r = rng(o.seed), H = o.h, t0 = o.bare;
+  g.add(at(cyl(o.base, o.base * 0.35, H, o.bark, 10), 0, H / 2, 0));
+  const nd = inst(sphereG, o.tiers * o.per * 7);
+  for (let t = 0; t < o.tiers; t++) {
+    const s = t / (o.tiers - 1), y = H * (t0 + (1 - t0) * s * 0.96), L = o.len * (1 - s * 0.85) + 0.5;
+    for (let m = 0; m < o.per; m++) {
+      const a = (m / o.per) * 6.28 + t * 0.9, dx = Math.cos(a), dz = Math.sin(a);
+      const tip = [dx * L, y + L * o.rise, dz * L];
+      g.add(limb([dx * 0.2, y, dz * 0.2], tip, 0.16 * (1 - s * 0.6), 0.07, o.bark));
+      for (let k = 1; k <= 6; k++) {
+        const q = k / 6, bx = dx * (0.2 + (L - 0.2) * q), bz = dz * (0.2 + (L - 0.2) * q), by = y + L * o.rise * q;
+        put(nd, bx, by, bz, 0.35 + (1 - s) * 0.25, 0.28, 0.6 + (1 - q) * 0.2, -a + 1.57, 0, 0, mixc(o.c1, o.c2, r()));
+      }
+    }
+  }
+  g.add(at(cone(0.5, 1.8, o.c1, 7), 0, H + 0.6, 0));
+  g.add(fin(nd));
+  g.userData.update = (t) => { g.rotation.z = Math.sin(t * 0.6) * 0.008; };
+  return g;
+}
+CREATURES.walchia = () => coniferTree({ seed: 41, h: 13, base: 0.6, bark: 0x6b4c34, bare: 0.1, tiers: 11, per: 5, len: 3.6, rise: -0.25, c1: 0x3d6b3a, c2: 0x5d8a46 });
+
+/* ---------------- MESOZOIC ---------------- */
+CREATURES.cycad = () => {
+  const g = new THREE.Group(), r = rng(51);
+  for (let i = 0; i < 9; i++) g.add(at(ell(0.85 - i * 0.012, 0.32, 0.85 - i * 0.012, i % 2 ? 0x6a5640 : 0x5a4733, 1), 0, 0.3 + i * 0.5, 0));
+  g.add(at(cyl(0.7, 0.62, 0.6, 0x4e3b28, 10), 0, 4.8, 0));
+  g.add(at(ell(0.42, 0.9, 0.42, 0xc47a3a, 0.8), 0, 5.4, 0));
+  fronds(g, { n: 12, len: 4.4, y0: 4.9, lift: 0.85, droop: 1.1, leaflets: 13, ll: 0.5, lw: 0.1, c1: 0x2f6a35, c2: 0x558a40, seed: 7, rachis: 0x3f5a30, thick: 1.4 });
+  g.userData.update = (t) => { g.rotation.z = Math.sin(t * 0.7) * 0.01; };
+  return g;
+};
+
+CREATURES.ginkgo = () => {
+  const g = new THREE.Group(), r = rng(61), trunk = 0x6a5a48;
+  g.add(at(cyl(0.9, 0.5, 6, trunk, 10), 0, 3, 0));
+  const leaves = inst(FAN, 520);
+  const tips = [];
+  for (let i = 0; i < 7; i++) {
+    const a = (i / 7) * 6.28, y = 4 + (i % 3) * 1.2, tip = [Math.cos(a) * 3.2, y + 3.2, Math.sin(a) * 3.2];
+    g.add(limb([0, y - 0.7, 0], tip, 0.3, 0.12, trunk)); tips.push(tip);
+  }
+  for (let k = 0; k < 520; k++) {
+    const t = tips[Math.floor(r() * tips.length)], q = r(), sx = t[0] * (0.35 + q * 0.7), sy = t[1] - 1.8 + q * 1.8 + (r() - 0.5) * 1.6, sz = t[2] * (0.35 + q * 0.7);
+    put(leaves, sx + (r() - 0.5) * 1.8, sy, sz + (r() - 0.5) * 1.8, 0.95, 1, 0.95, r() * 6.28, (r() - 0.5) * 0.9, (r() - 0.5) * 0.9, mixc(0x7aa83a, 0xc4c840, r() * r()));
+  }
+  g.add(fin(leaves));
+  g.userData.update = (t) => { g.rotation.z = Math.sin(t * 0.9) * 0.012; };
+  return g;
+};
+
+CREATURES.araucaria = () => coniferTree({ seed: 71, h: 17, base: 0.85, bark: 0x5a4636, bare: 0.38, tiers: 9, per: 6, len: 4.6, rise: 0.15, c1: 0x2f5a38, c2: 0x4a7a44 });
+
+CREATURES.treeFern = () => {
+  const g = new THREE.Group(), r = rng(81);
+  for (let i = 0; i < 16; i++) g.add(at(cyl(0.48 - i * 0.008, 0.46 - i * 0.008, 0.5, i % 2 ? 0x5a4630 : 0x6a5238, 8), Math.sin(i * 0.3) * 0.12, 0.25 + i * 0.5, 0));
+  g.add(at(ell(0.7, 0.35, 0.7, 0x8a6a3a, 1), 0, 0.25, 0));
+  fronds(g, { n: 14, len: 5.0, y0: 8.1, lift: 0.8, droop: 1.35, leaflets: 16, ll: 1.0, lw: 0.34, c1: 0x3a7a35, c2: 0x62a04a, seed: 9 });
+  g.add(at(ell(0.4, 0.35, 0.4, 0x7a5a30, 1), 0, 8.1, 0));
+  g.userData.update = (t) => { g.rotation.z = Math.sin(t * 0.8) * 0.012; };
+  return g;
+};
+
+CREATURES.magnolia = () => {
+  const g = new THREE.Group(), r = rng(91), bark = 0x6a5446;
+  g.add(at(cyl(0.6, 0.38, 3.4, bark, 9), 0, 1.7, 0));
+  const ends = [];
+  for (let i = 0; i < 4; i++) { const a = i * 1.57 + 0.4, tip = [Math.cos(a) * 2.2, 5.6 + (i % 2) * 0.7, Math.sin(a) * 2.2]; g.add(limb([0, 2.8, 0], tip, 0.28, 0.1, bark)); ends.push(tip); }
+  for (const t of ends) for (let k = 0; k < 3; k++) g.add(at(ell(1.5, 0.95, 1.5, mixc(0x2f6a36, 0x4f8a42, r())), t[0] * (0.6 + k * 0.28) + (r() - 0.5), t[1] - 0.8 + k * 0.45, t[2] * (0.6 + k * 0.28) + (r() - 0.5)));
+  g.add(at(ell(2, 1.1, 2, 0x3a7a3c), 0, 6.4, 0));
+  const pet = inst(sphereG, 9 * 7);
+  for (let f = 0; f < 9; f++) {
+    const a = r() * 6.28, d = r() * 1.7, x = Math.cos(a) * d, z = Math.sin(a) * d, y = 6.4 + 1.1 * Math.sqrt(Math.max(0, 1 - (d / 2) * (d / 2))) + 0.2;
+    for (let k = 0; k < 6; k++) { const pa = (k / 6) * 6.28; put(pet, x + Math.cos(pa) * 0.3, y, z + Math.sin(pa) * 0.3, 0.7, 0.14, 0.34, -pa, 0, 0.9, k % 2 ? 0xf4e6e6 : 0xfbf3ee); }
+    put(pet, x, y + 0.1, z, 0.22, 0.22, 0.22, 0, 0, 0, 0xe9c04a);
+  }
+  g.add(fin(pet));
+  g.userData.update = (t) => { g.rotation.z = Math.sin(t * 0.8) * 0.01; };
+  return g;
+};
+
+/* ---------------- CENOZOIC ---------------- */
+CREATURES.palm = () => {
+  const g = new THREE.Group(), r = rng(101);
+  let prev = [0, 0, 0];
+  for (let k = 1; k <= 8; k++) { const p = [Math.sin(k * 0.28) * 0.9, k * 1.1, 0]; g.add(limb(prev, p, 0.42 - k * 0.025, 0.4 - k * 0.025, k % 2 ? 0x8a6a48 : 0x7a5c3e)); g.add(at(cyl(0.44 - k * 0.025, 0.44 - k * 0.025, 0.07, 0x5a4430, 8), p[0], p[1], p[2])); prev = p; }
+  const top = new THREE.Group(); top.position.set(prev[0], prev[1], 0); g.add(top);
+  fronds(top, { n: 13, len: 4.6, y0: 0.2, lift: 0.75, droop: 1.8, leaflets: 16, ll: 0.8, lw: 0.18, c1: 0x2f7a3a, c2: 0x5aa048, seed: 13, rachis: 0x4a6a30, thick: 1.5 });
+  for (let i = 0; i < 4; i++) top.add(at(ell(0.28, 0.32, 0.28, 0x6a4a1c, 0.8), Math.cos(i * 1.6) * 0.35, -0.2, Math.sin(i * 1.6) * 0.35));
+  g.userData.update = (t) => { top.rotation.z = Math.sin(t * 0.9) * 0.025; };
+  return g;
+};
+
+CREATURES.oak = () => {
+  const g = new THREE.Group(), r = rng(111), bark = 0x5e4a38;
+  g.add(at(cyl(1.1, 0.7, 4.2, bark, 10), 0, 2.1, 0)); g.add(at(cone(1.7, 1.1, bark, 10), 0, 0.5, 0));
+  const ends = [];
+  for (let i = 0; i < 5; i++) { const a = (i / 5) * 6.28 + 0.3, tip = [Math.cos(a) * 3.1, 6.2 + (i % 2) * 0.8, Math.sin(a) * 3.1]; g.add(limb([0, 3.6, 0], tip, 0.45, 0.16, bark)); ends.push(tip); }
+  const cols = [0x3f7a2e, 0x4f8a34, 0x5a9a3a, 0x7a9a30, 0xb08a2a];
+  for (const t of ends) for (let k = 0; k < 2; k++) g.add(at(ell(2.2, 1.6, 2.2, cols[Math.floor(r() * 4.4)]), t[0] + (r() - 0.5) * 1.6, t[1] + 0.2 + k * 0.7, t[2] + (r() - 0.5) * 1.6));
+  g.add(at(ell(2.8, 1.8, 2.8, 0x4f8a34), 0, 7.4, 0));
+  const ac = inst(sphereG, 14);
+  for (let i = 0; i < 14; i++) { const a = r() * 6.28, d = 2.2 + r() * 2.2; put(ac, Math.cos(a) * d, 4.8 + r() * 2.8, Math.sin(a) * d, 0.17, 0.22, 0.17, 0, 0, 0, 0x8a5a2a); }
+  g.add(fin(ac));
+  g.userData.update = (t) => { g.rotation.z = Math.sin(t * 0.7) * 0.01; };
+  return g;
+};
+
+CREATURES.redwood = () => {
+  const g = new THREE.Group(), r = rng(121), H = 24;
+  for (let i = 0; i < 12; i++) g.add(at(cyl(1.5 - i * 0.1, 1.5 - (i + 1) * 0.1, H / 12, i % 2 ? 0x8a4a30 : 0x7a3f2a, 10), 0, (i + 0.5) * (H / 12), 0));
+  g.add(at(cone(2.6, 2.4, 0x7a3f2a, 10), 0, 1.0, 0));
+  for (let i = 0; i < 7; i++) { const y = 8 + i * 2.3, R = 3.3 - i * 0.42; g.add(at(cone(R, 3.4, mixc(0x2c5a34, 0x3f7240, r()), 10), 0, y + 1.2, 0)); }
+  g.add(at(cone(0.5, 2.2, 0x3f7240, 8), 0, 24.2, 0));
+  g.userData.update = (t) => { g.rotation.z = Math.sin(t * 0.5) * 0.006; };
+  return g;
+};
+
+CREATURES.daisy = () => {
+  const g = new THREE.Group(), r = rng(131), pet = inst(sphereG, 6 * 16);
+  const sx = [[0, 0, 4.2], [1.4, 0.8, 3.4], [-1.3, 0.6, 3.8], [0.4, -1.4, 3.0], [-0.6, 1.5, 3.3], [1.2, -0.6, 2.6]];
+  sx.forEach(([x, z, H], j) => {
+    g.add(limb([x * 0.3, 0, z * 0.3], [x, H, z], 0.1, 0.07, 0x4a7a35));
+    for (let k = 0; k < 3; k++) { const a = k * 2.1 + j; g.add(at((() => { const l = ell(0.55, 0.04, 0.2, 0x4f8a3a); l.rotation.y = -a; l.rotation.z = 0.25; return l; })(), x * 0.3 + Math.cos(a) * 0.5, 0.7 + k * 0.4, z * 0.3 + Math.sin(a) * 0.5)); }
+    for (let i = 0; i < 16; i++) { const a = (i / 16) * 6.28; put(pet, x + Math.cos(a) * 0.55, H + 0.1, z + Math.sin(a) * 0.55, 0.5, 0.05, 0.13, -a, 0, 0.0, 0xfafaf4); }
+    g.add(at(ell(0.34, 0.2, 0.34, 0xe9b830, 0.7), x, H + 0.12, z));
+  });
+  g.add(fin(pet)); g.scale.setScalar(1.5);
+  g.userData.update = (t) => { g.rotation.z = Math.sin(t * 1.1) * 0.02; };
+  return g;
+};
+
+CREATURES.cactus = () => {
+  const g = new THREE.Group(), col = 0x4a8a50, sp = inst(new THREE.ConeGeometry(0.03, 0.22, 4), 260), r = rng(141);
+  const spines = (x, y0, h, rad, n) => { for (let i = 0; i < n; i++) { const a = r() * 6.28, y = y0 + r() * h; put(sp, x + Math.cos(a) * (rad + 0.08), y, Math.sin(a) * (rad + 0.08), 1, 1, 1, 0, Math.sin(a) * 1.4, -Math.cos(a) * 1.4, 0xf2ecd0); } };
+  g.add(at(cyl(0.95, 0.95, 6.2, col, 12), 0, 3.1, 0)); g.add(at(ell(0.95, 0.95, 0.95, col), 0, 6.2, 0));
+  for (let i = 0; i < 8; i++) { const a = (i / 8) * 6.28; g.add(at(cyl(0.07, 0.07, 6.0, 0x3a7040, 4), Math.cos(a) * 0.93, 3.1, Math.sin(a) * 0.93)); }
+  spines(0, 0.5, 5.4, 0.97, 150);
+  for (const s of [-1, 1]) {
+    const y = s < 0 ? 2.6 : 3.6, up = s < 0 ? 2.6 : 2.0;
+    g.add(limb([s * 0.7, y, 0], [s * 2.0, y, 0], 0.5, 0.5, col)); g.add(at(ell(0.5, 0.5, 0.5, col), s * 2.0, y, 0));
+    g.add(at(cyl(0.5, 0.5, up, col, 12), s * 2.0, y + up / 2, 0)); g.add(at(ell(0.5, 0.5, 0.5, col), s * 2.0, y + up, 0));
+  }
+  g.add(at(ell(0.38, 0.2, 0.38, 0xf0a0c0, 0.6), 0, 7.1, 0)); g.add(at(ell(0.22, 0.12, 0.22, 0xf5d050, 0.6), 0, 7.22, 0));
+  g.add(fin(sp));
+  g.userData.update = null;
+  return g;
+};
+
+/* ---------------------------------------------------------------------
    SCENERY
    --------------------------------------------------------------------- */
 function fern(r) {
@@ -1875,6 +2146,7 @@ function buildWorld(era) {
     const where = def.where;
     const [x, z, h] = findSpot(where, def.radius + 6);
     const obj = CREATURES[def.build]();
+    if (def.plant) { const bb = new THREE.Box3().setFromObject(obj), sz = bb.getSize(new THREE.Vector3()); def.look = Math.max(def.view ?? 0, def.radius, sz.y * 1.55, Math.max(sz.x, sz.z) * 1.5); }
     obj.rotation.order = 'YXZ';
     let y = h;
     if (where === 'deep') y = clamp(lerp(W, h, 0.55), h + 2.4, W - 1.6);
@@ -1901,7 +2173,7 @@ function buildWorld(era) {
 
   /* keep every specimen's view clear: remove trees, rocks, plants and grass blades around each animal */
   {
-    const zones = specimens.filter((s) => s.def.where !== 'air').map((s) => { const d = s.def; return [s.home.x, s.home.z, (d.walk ? d.walk.R : d.orbit ? Math.min(d.orbit.r, 6) : 0) + (d.view ?? d.radius) * 0.7]; });
+    const zones = specimens.filter((s) => s.def.where !== 'air').map((s) => { const d = s.def; return [s.home.x, s.home.z, (d.walk ? d.walk.R : d.orbit ? Math.min(d.orbit.r, 6) : 0) + (d.view ?? d.radius) * (d.plant ? 1.25 : 0.7)]; });
     const hit = (x, z) => zones.some((q) => Math.hypot(x - q[0], z - q[1]) < q[2]);
     for (const c of [...sceneryG.children]) if (hit(c.position.x, c.position.z)) sceneryG.remove(c);
     const zm = new THREE.Matrix4().makeScale(0, 0, 0);
@@ -2176,10 +2448,14 @@ function updateHud() {
 }
 function nearSpecimen() {
   if (!world) return null;
+  if (S.free && S.goFocus && world.specimens.includes(S.goFocus.s) && camera.position.distanceTo(S.goFocus.p) < 5) {
+    const f = S.goFocus.s, fl = Math.max(f.def.radius * 1.25, (f.def.view ?? f.def.radius) * 1.25, f.def.plant ? f.def.look * 1.35 : 0);
+    if (camera.position.distanceTo(f.obj.position) < fl) return f;
+  }
   let best = null, bd = 1e9;
   for (const s of world.specimens) {
     let d, lim;
-    if (S.free) { d = camera.position.distanceTo(s.obj.position); lim = Math.max(s.def.radius * 1.25, (s.def.view ?? s.def.radius) * 1.25); }
+    if (S.free) { d = camera.position.distanceTo(s.obj.position); lim = Math.max(s.def.radius * 1.25, (s.def.view ?? s.def.radius) * 1.25); if (s.def.plant) lim = Math.max(lim, s.def.look * 1.35); }
     else { d = Math.hypot(s.home.x - player.position.x, s.home.z - player.position.z); lim = s.def.radius; }
     if (d < lim && d < bd) { bd = d; best = s; }
   }
@@ -2195,9 +2471,9 @@ function inspect() {
     scene.attach; s.beacon.group.remove(s.beacon.beam); s.beacon.ring.material.color.set(0x62e08a); s.beacon.ring.scale.setScalar(0.6);
     renderTabs();
   }
-  const done = S.found[S.era].size === era.specimens.length;
+  const done = !s.def.plant && era.specimens.filter((d) => !d.plant).every((d) => S.found[S.era].has(d.id));
   showModal(
-    `<div class="eyebrow">SPECIMEN · ${era.name.toUpperCase()}</div><h2>${s.def.name}</h2><p>${s.def.fact}</p>` +
+    `<div class="eyebrow">${s.def.plant ? 'PLANT' : 'SPECIMEN'} · ${era.name.toUpperCase()}</div><h2>${s.def.name}</h2><p>${s.def.fact}</p>` +
     '',
     done && first ? 'Continue' : 'Close',
     () => { if (done && first) triggerEnding(S.era); });
@@ -2324,7 +2600,7 @@ async function runTour(mode) {
       const introLen = era.text.join(' ').length + era.change.length;
       await tourWait(tok, 120000, (el) => el > minRead(introLen) && !narrating());
       if (!alive()) break;
-      const picks = mode === 'full' ? era.specimens.map((d) => d.id) : TOUR_PICKS[era.key];
+      const picks = mode === 'full' ? era.specimens.filter((d) => !d.plant).map((d) => d.id) : TOUR_PICKS[era.key];
       const first = world.specimens.find((x) => x.def.id === picks[0]); let pre = null;
       $('#bigread').classList.remove('show'); stopSpeak(); T.skip = false;
       if (first) { pre = first; T.label = `${era.name} · ${first.def.name} (1/${picks.length})`; updateTourBar(); goTo(first); }
@@ -2427,7 +2703,9 @@ function losClear(from, to) {
 function goTo(s) {
   if (!s) return;
   setFree(true);
-  const o = s.obj, vd = s.def.view ?? s.def.radius, WL = world.W, aq = isAqua(s), air = s.def.where === 'air';
+  const o = s.obj; let vd = s.def.view ?? s.def.radius; const WL = world.W, aq = isAqua(s), air = s.def.where === 'air';
+  let plantH = 0;
+  if (s.def.plant) { const bb = new THREE.Box3().setFromObject(o), sz = bb.getSize(new THREE.Vector3()); plantH = sz.y; vd = Math.max(vd, s.def.look || 0, sz.y * 1.55, Math.max(sz.x, sz.z) * 1.5); }
   const center = o.position.clone(), base = (o.rotation.y || 0) + 0.9, p1 = new THREE.Vector3();
   const ang = (k) => base + (k % 2 ? -1 : 1) * Math.ceil(k / 2) * 0.55;
   if (aq) {
@@ -2440,11 +2718,11 @@ function goTo(s) {
     if (!ok && fb) { p1.copy(fb); ok = true; }
     if (!ok) p1.set(center.x + Math.sin(base) * vd * 0.7, Math.min(WL - 0.6, center.y + 0.5), center.z + Math.cos(base) * vd * 0.7);
   } else {
-    if (!air) center.y += vd * 0.18;
+    if (!air) center.y += plantH ? plantH * 0.42 : vd * 0.18;
     let ok = false;
     for (let k = 0; k < 12 && !ok; k++) {
       const a = ang(k), x = center.x + Math.sin(a) * vd * 0.95, z = center.z + Math.cos(a) * vd * 0.95;
-      const y = Math.max(center.y + (air ? 0 : vd * 0.22) + 1.0, Math.max(world.H(x, z), WL - 5) + 1.0);
+      const y = Math.max(center.y + (air ? 0 : plantH ? plantH * 0.05 : vd * 0.22) + 1.0, Math.max(world.H(x, z), WL - 5) + 1.0);
       if (k === 0) p1.set(x, y, z);
       if (world.H(x, z) < WL - 0.3 && !air) continue;
       if (losClear(new THREE.Vector3(x, y, z), center)) { p1.set(x, y, z); ok = true; }
@@ -2452,16 +2730,22 @@ function goTo(s) {
   }
   const v = center.clone().sub(p1), y1 = Math.atan2(-v.x, -v.z), pi1 = Math.atan2(v.y, Math.hypot(v.x, v.z));
   let dy = y1 - fc.yaw; dy = Math.atan2(Math.sin(dy), Math.cos(dy));
+  S.goFocus = { s, p: p1.clone() };
   fc.glide = { t: 0, dur: clamp(camera.position.distanceTo(p1) / 45, 0.9, 3.2), p0: fc.pos.clone(), p1, y0: fc.yaw, dy, pi0: fc.pitch, pi1 };
   $('#list').classList.remove('show');
 }
 function renderList() {
   if (!world) return;
   const el = $('#listBody'); el.innerHTML = '';
-  world.specimens.forEach((s) => {
-    const b = document.createElement('button'); b.className = 'li' + (s.found ? ' ok' : '');
-    b.innerHTML = `<span>${s.def.name}</span><i>${s.found ? '✓' : '·'}</i>`; b.onclick = () => goTo(s); el.appendChild(b);
-  });
+  for (const plants of [false, true]) {
+    const grp = world.specimens.filter((s) => !!s.def.plant === plants);
+    if (!grp.length) continue;
+    const h = document.createElement('div'); h.className = 'lh'; h.textContent = plants ? '🌿 Plants' : '🦴 Animals'; el.appendChild(h);
+    grp.forEach((s) => {
+      const b = document.createElement('button'); b.className = 'li' + (s.found ? ' ok' : '');
+      b.innerHTML = `<span>${s.def.name}</span><i>${s.found ? '✓' : '·'}</i>`; b.onclick = () => goTo(s); el.appendChild(b);
+    });
+  }
 }
 function toggleList() { renderList(); $('#list').classList.toggle('show'); }
 function gallery(name, o = {}) {
