@@ -31,7 +31,7 @@ const key=new THREE.DirectionalLight(0xffe6cc,1.2);key.position.set(-3,5,6);S.ad
 const glowL=new THREE.PointLight(0x7fe3ff,0,14,1.6);S.add(glowL);
 const MT={"L":{"w":1200,"h":440,"tx":1152,"ty":275,"oy":760},"R":{"w":1280,"h":440,"tx":31,"ty":200,"oy":760},"ref":997},TL=new THREE.TextureLoader(),WS=.0052,tex=(f,c)=>{const t=TL.load(f);if(c)t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t};
 function hand(n){const m=MT[n],g=new THREE.Group(),map=tex('hand_'+n+'.png',1);
- const mesh=new THREE.Mesh(new THREE.PlaneGeometry(m.w*WS,m.h*WS,170,90),new THREE.MeshStandardMaterial({map,emissiveMap:map,emissive:0xffffff,emissiveIntensity:.55,normalMap:tex('normal_'+n+'.png'),displacementMap:tex('height_'+n+'.png'),displacementScale:.5,displacementBias:-.06,roughness:.8,transparent:true,alphaTest:.02,side:THREE.DoubleSide}));
+ const mesh=new THREE.Mesh(new THREE.PlaneGeometry(m.w*WS,m.h*WS),new THREE.MeshBasicMaterial({map,toneMapped:false,transparent:true,alphaTest:.02,side:THREE.DoubleSide}));
  mesh.position.set((m.w/2-m.tx)*WS,-(m.h/2-m.ty)*WS,0);g.add(mesh);g.position.y=(MT.ref-(m.oy+m.ty))*WS;return g}
 const A=hand('L'),G=hand('R');S.add(A,G);
 function glowTex(){const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),g=x.createRadialGradient(64,64,0,64,64,64);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.25,'rgba(140,230,255,.55)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)}
