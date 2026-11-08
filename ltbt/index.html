@@ -35,6 +35,10 @@ function hand(n){const m=MT[n],g=new THREE.Group(),map=tex('hand_'+n+'.png',1);
  mesh.position.set((m.w/2-m.tx)*WS,-(m.h/2-m.ty)*WS,0);g.add(mesh);g.position.y=(MT.ref-(m.oy+m.ty))*WS;return g}
 const A=hand('L'),G=hand('R');S.add(A,G);
 function glowTex(){const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),g=x.createRadialGradient(64,64,0,64,64,64);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.25,'rgba(140,230,255,.55)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)}
+const LW=1.1,LR=.26,sh=new THREE.Shape();sh.absarc(-LW/2+LR,-LW/2+LR,LR,Math.PI,1.5*Math.PI);sh.absarc(LW/2-LR,-LW/2+LR,LR,1.5*Math.PI,2*Math.PI);sh.absarc(LW/2-LR,LW/2-LR,LR,0,.5*Math.PI);sh.absarc(-LW/2+LR,LW/2-LR,LR,.5*Math.PI,Math.PI);
+const lt=tex('claude.png',1);lt.repeat.set(1/LW,1/LW);lt.offset.set(.5,.5);
+const logo=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:.16,bevelEnabled:true,bevelSize:.02,bevelThickness:.03,bevelSegments:3,curveSegments:24}),[new THREE.MeshStandardMaterial({map:lt,emissiveMap:lt,emissive:0xffffff,emissiveIntensity:.5,roughness:.45,metalness:.1}),new THREE.MeshStandardMaterial({color:0xd97757,roughness:.4,metalness:.2})]);
+logo.position.set(0,-1.25,0);logo.scale.setScalar(.8);S.add(logo);
 const E=new THREE.Group();S.add(E);
 const core=new THREE.Mesh(new THREE.IcosahedronGeometry(.3,1),new THREE.MeshStandardMaterial({color:0xffffff,emissive:0x9ee9ff,emissiveIntensity:2.2,flatShading:true,roughness:.2}));
 const cage=new THREE.Mesh(new THREE.IcosahedronGeometry(.5,1),new THREE.MeshBasicMaterial({color:0x9ee9ff,wireframe:true,transparent:true,opacity:.55}));
@@ -67,5 +71,6 @@ R.setAnimationLoop(()=>{const n=performance.now(),dt=Math.min(.05,(n-last)/1e3);
  rings.forEach((r,i)=>{r.rotation.z+=dt*(.6+i*.5);r.rotation.x+=dt*.3});cage.rotation.y-=dt*.4;
  A.rotation.y+=(mx*.3-A.rotation.y)*dt*4;G.rotation.y+=(mx*.3-G.rotation.y)*dt*4;A.rotation.x=G.rotation.x+=(my*.2-G.rotation.x)*dt*4;
  C.position.x+=(mx*.9-C.position.x)*Math.min(1,dt*3);C.position.y+=(-1.0-my*.5-C.position.y)*Math.min(1,dt*3);C.lookAt(0,-1.0,0);
+ logo.rotation.y=Math.sin(n/1100)*.7+mx*.3;logo.rotation.x=my*.2;logo.position.y=-1.25+Math.sin(n/700)*.06;
  R.render(S,C)});
 </script></body></html>
