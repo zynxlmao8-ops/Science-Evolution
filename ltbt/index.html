@@ -14,9 +14,12 @@ h1 span.w{width:.3em}
 p{margin:14px 0 0;font-size:clamp(13px,1.6vw,20px);letter-spacing:.32em;text-transform:uppercase;color:#9fdcf0;opacity:0;transition:opacity 1.6s 1.7s}
 small{display:block;margin-top:22px;font-size:12px;letter-spacing:.12em;color:#5d7a86;opacity:0;transition:opacity 1.6s 2.6s}
 .go p,.go small{opacity:1}
+#say{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-style:italic;font-size:clamp(24px,3.6vw,52px);letter-spacing:.06em;color:#d6eef6;text-shadow:0 0 30px #5fd0ff66;opacity:0;pointer-events:none}
+#say.on{animation:say 3.2s ease-in-out forwards}
+@keyframes say{0%{opacity:0;filter:blur(12px)}25%,72%{opacity:1;filter:blur(0)}100%{opacity:0;filter:blur(12px)}}
 #hint{position:fixed;top:18px;width:100%;text-align:center;font-size:12px;letter-spacing:.3em;color:#4d6b78;text-transform:uppercase;transition:opacity .6s}
 </style></head><body>
-<div id="hint">move your mouse · click to ignite</div><div id="flash"></div>
+<div id="hint">move your mouse · click to ignite</div><div id="flash"></div><div id="say">And Claude said,</div>
 <div id="txt"><h1 id="h"></h1><p>One prompt. All the thinking.</p><small>Built by Claude from a single prompt · click to replay</small></div>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 <script type="module">
@@ -48,17 +51,18 @@ cage.scale.setScalar(1.9);cage.material.color.set(0xff9a6a);rings.forEach(t=>{t.
 const wave=new THREE.Mesh(new THREE.RingGeometry(.92,1,96),new THREE.MeshBasicMaterial({color:0xaeeeff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,depthWrite:false}));S.add(wave);
 const N=900,pp=new Float32Array(N*3),pv=new Float32Array(N*3),P=new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(pp,3)),new THREE.PointsMaterial({color:0xcff6ff,size:.05,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));P.frustumCulled=false;S.add(P);
 const st=new Float32Array(700*3).map((_,i)=>i%3==2?-6-Math.random()*20:(Math.random()-.5)*40);S.add(new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(st,3)),new THREE.PointsMaterial({color:0x6a8aa0,size:.03})));
-let t0=performance.now(),blown=-1,mx=0,my=0,pw=1;
+const INTRO=3.2;let t0=performance.now(),blown=-1,mx=0,my=0,pw=1;
 addEventListener('pointermove',e=>{mx=e.clientX/innerWidth*2-1;my=e.clientY/innerHeight*2-1});
 function blow(){if(blown>=0)return;blown=performance.now();$('#hint').style.opacity=0;
  for(let i=0;i<N;i++){const a=Math.random()*6.283,b=Math.acos(2*Math.random()-1),s=1.5+Math.random()*7;pp.set([0,0,0],i*3);pv.set([Math.sin(b)*Math.cos(a)*s,Math.sin(b)*Math.sin(a)*s,Math.cos(b)*s],i*3)}
  const f=$('#flash');f.animate([{opacity:.95},{opacity:0}],{duration:900,easing:'ease-out'});
  setTimeout(()=>txt.classList.add('go'),450)}
-function reset(){txt.classList.remove('go');blown=-1;t0=performance.now();P.material.opacity=0;wave.material.opacity=0;$('#hint').style.opacity=1}
-addEventListener('pointerdown',()=>{if(blown<0)blow();else if(performance.now()-blown>4500)reset()});
+function intro(){const e=$('#say');e.classList.remove('on');void e.offsetWidth;e.classList.add('on')}intro();
+function reset(){intro();txt.classList.remove('go');blown=-1;t0=performance.now();P.material.opacity=0;wave.material.opacity=0;$('#hint').style.opacity=1}
+addEventListener('pointerdown',()=>{if(blown<0){if((performance.now()-t0)/1e3>INTRO+1)blow()}else if(performance.now()-blown>4500)reset()});
 const ease=x=>1-Math.pow(1-Math.min(1,Math.max(0,x)),3);let last=performance.now();
-R.setAnimationLoop(()=>{const n=performance.now(),dt=Math.min(.05,(n-last)/1e3);last=n;const t=(n-t0)/1e3,b=blown<0?-1:(n-blown)/1e3;
- const k=ease(t/2.2);A.position.x=-.85-(1-k)*7;G.position.x=.85+(1-k)*7;
+R.setAnimationLoop(()=>{const n=performance.now(),dt=Math.min(.05,(n-last)/1e3);last=n;const t=(n-t0)/1e3-INTRO,b=blown<0?-1:(n-blown)/1e3;
+ E.visible=A.visible=G.visible=t>=0;const k=ease(t/2.2);A.position.x=-.85-(1-k)*7;G.position.x=.85+(1-k)*7;
  const breath=1+Math.sin(n/420)*.06;let sc=(.35+.65*ease((t-.8)/1.6))*breath,gl=.6+.4*k;
  if(blown<0&&t>3.4)blow();
  if(b>=0){const p=Math.max(0,1-b/2.4);sc*=1+1.8*Math.exp(-b*2.2)*Math.sin(Math.min(b*7,Math.PI));gl+=3*p;
