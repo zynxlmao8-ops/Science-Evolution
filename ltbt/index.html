@@ -71,6 +71,6 @@ R.setAnimationLoop(()=>{const n=performance.now(),dt=Math.min(.05,(n-last)/1e3);
  rings.forEach((r,i)=>{r.rotation.z+=dt*(.6+i*.5);r.rotation.x+=dt*.3});cage.rotation.y-=dt*.4;
  A.rotation.y+=(mx*.3-A.rotation.y)*dt*4;G.rotation.y+=(mx*.3-G.rotation.y)*dt*4;A.rotation.x=G.rotation.x+=(my*.2-G.rotation.x)*dt*4;
  C.position.x+=(mx*.9-C.position.x)*Math.min(1,dt*3);C.position.y+=(-1.0-my*.5-C.position.y)*Math.min(1,dt*3);C.lookAt(0,-1.0,0);
- {const p=Math.sin(n/380);logo.rotation.y=Math.sin(n/1100)*.4;logo.material[0].emissiveIntensity=.55+p*.25;lg.intensity=2.2+p*1.2}
+ {const p=Math.sin(n/380);logo.rotation.y=n/450;logo.material[0].emissiveIntensity=.55+p*.25;lg.intensity=2.2+p*1.2}
  R.render(S,C)});
 </script></body></html>
