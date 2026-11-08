@@ -47,7 +47,7 @@ const core=new THREE.Mesh(new THREE.IcosahedronGeometry(.3,1),new THREE.MeshStan
 const cage=new THREE.Mesh(new THREE.IcosahedronGeometry(.5,1),new THREE.MeshBasicMaterial({color:0x9ee9ff,wireframe:true,transparent:true,opacity:.55}));
 const rings=[0,1,2].map(i=>{const t=new THREE.Mesh(new THREE.TorusGeometry(.66+i*.1,.006,6,90),new THREE.MeshBasicMaterial({color:0xbff3ff}));t.rotation.set(i*1.05,i*.7,0);return t});
 const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex(),blending:THREE.AdditiveBlending,transparent:true,depthWrite:false}));
-cage.scale.setScalar(1.9);cage.material.color.set(0xff9a6a);rings.forEach(t=>{t.scale.setScalar(1.55);t.material.color.set(0xffb48a)});E.add(halo,cage,...rings,logo);
+cage.scale.setScalar(1.9);cage.material.color.set(0xff9a6a);rings.forEach(t=>{t.scale.setScalar(1.55);t.material.color.set(0xffb48a)});E.add(halo,cage,logo);
 const wave=new THREE.Mesh(new THREE.RingGeometry(.92,1,96),new THREE.MeshBasicMaterial({color:0xaeeeff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,depthWrite:false}));S.add(wave);
 const N=900,pp=new Float32Array(N*3),pv=new Float32Array(N*3),P=new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(pp,3)),new THREE.PointsMaterial({color:0xcff6ff,size:.05,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));P.frustumCulled=false;S.add(P);
 const st=new Float32Array(700*3).map((_,i)=>i%3==2?-6-Math.random()*20:(Math.random()-.5)*40);S.add(new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(st,3)),new THREE.PointsMaterial({color:0x6a8aa0,size:.03})));
