@@ -17,9 +17,10 @@ small{display:block;margin-top:22px;font-size:12px;letter-spacing:.12em;color:#5
 #say{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-style:italic;font-size:clamp(24px,3.6vw,52px);letter-spacing:.06em;color:#d6eef6;text-shadow:0 0 30px #5fd0ff66;opacity:0;pointer-events:none}
 #say.on{animation:say 3.2s ease-in-out forwards}
 @keyframes say{0%{opacity:0;filter:blur(12px)}25%,72%{opacity:1;filter:blur(0)}100%{opacity:0;filter:blur(12px)}}
+#gate{position:fixed;inset:0;z-index:9;background:#000;display:flex;align-items:center;justify-content:center;font-size:13px;letter-spacing:.32em;text-transform:uppercase;color:#7fb4c6;transition:opacity .25s;pointer-events:none}
 #hint{position:fixed;top:18px;width:100%;text-align:center;font-size:12px;letter-spacing:.3em;color:#4d6b78;text-transform:uppercase;transition:opacity .6s}
 </style></head><body>
-<div id="hint">move your mouse · click to ignite</div><div id="flash"></div><div id="say">And Claude said,</div>
+<div id="gate">click to begin · sound on</div><div id="hint">move your mouse · click to ignite</div><div id="flash"></div><div id="say">And Claude said,</div>
 <div id="txt"><h1 id="h"></h1><p>One prompt. All the thinking.</p><small>Built by Claude from a single prompt · click to replay</small></div>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <script type="module">
@@ -52,15 +53,63 @@ cage.scale.setScalar(1.9);cage.material.color.set(0xff9a6a);rings.forEach(t=>{t.
 const wave=new THREE.Mesh(new THREE.RingGeometry(.92,1,96),new THREE.MeshBasicMaterial({color:0xaeeeff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,depthWrite:false}));S.add(wave);
 const N=900,pp=new Float32Array(N*3),pv=new Float32Array(N*3),P=new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(pp,3)),new THREE.PointsMaterial({color:0xcff6ff,size:.05,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));P.frustumCulled=false;S.add(P);
 const st=new Float32Array(700*3).map((_,i)=>i%3==2?-6-Math.random()*20:(Math.random()-.5)*40);S.add(new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(st,3)),new THREE.PointsMaterial({color:0x6a8aa0,size:.03})));
-const INTRO=3.2;let t0=performance.now(),blown=-1,mx=0,my=0,pw=1;
+const INTRO=3.2;let t0=1/0,blown=-1,mx=0,my=0,pw=1,started=false,lph=0;
+// ---- sound: synthesized Web Audio, every cue scheduled on the audio clock from the same instant as the visuals ----
+const snd=(()=>{let A=null,M,NB,hF,hG,hI;
+const cl=x=>Math.min(1,Math.max(0,x)),eo=x=>1-Math.pow(1-cl(x),3),ss=x=>(x=cl(x))*x*(3-2*x),cv=(f,n=128)=>Float32Array.from({length:n},(_,i)=>f(i/(n-1))),PT=[0,2,4,7,9],nt=(b,k)=>b*Math.pow(2,(PT[k%5]+12*(k/5|0))/12);
+function env(t,d,fn,v){const g=A.createGain();g.gain.value=0;g.gain.setValueCurveAtTime(cv(x=>fn(x)*v),t,d);g.gain.setTargetAtTime(0,t+d+.001,.02);return g}
+function out(g,p,pf,t,d){const s=A.createStereoPanner();pf?s.pan.setValueCurveAtTime(cv(pf),t,d):s.pan.value=p||0;g.connect(s);s.connect(M)}
+function ng(t,d,fn,o={}){const{f0=1e3,f1=f0,q=1,ty='bandpass',v=1,p=0,pf}=o,s=A.createBufferSource(),f=A.createBiquadFilter(),g=env(t,d,fn,v);s.buffer=NB;s.loop=true;f.type=ty;f.Q.value=q;f.frequency.setValueAtTime(f0,t);f.frequency.exponentialRampToValueAtTime(f1,t+d);s.connect(f);f.connect(g);out(g,p,pf,t,d);s.start(t,Math.random());s.stop(t+d+.2)}
+function tn(t,d,f0,f1,fn,o={}){const{ty='sine',v=1,p=0,pf,fc,dt=0}=o,s=A.createOscillator(),g=env(t,d,fn,v);s.type=ty;s.detune.value=dt;if(fc)s.frequency.setValueCurveAtTime(cv(fc),t,d);else{s.frequency.setValueAtTime(f0,t);s.frequency.exponentialRampToValueAtTime(f1,t+d)}s.connect(g);out(g,p,pf,t,d);s.start(t);s.stop(t+d+.2)}
+function bl(t,f,v,p=0,d=1){[[f,1,1],[f*2.76,.25,.35]].forEach(([fr,a,k])=>{const s=A.createOscillator(),g=A.createGain();s.frequency.value=fr;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v*a,t+.006);g.gain.exponentialRampToValueAtTime(.0001,t+d*k);s.connect(g);out(g,p);s.start(t);s.stop(t+d*k+.05)})}
+const say=x=>x<.25?ss(x/.25):x<.72?1:ss((1-x)/.28);
+return{
+ start(){try{
+  if(!A){A=new(window.AudioContext||window.webkitAudioContext)();M=A.createGain();M.gain.value=.6;const c=A.createDynamicsCompressor();M.connect(c);c.connect(A.destination);
+   NB=A.createBuffer(1,A.sampleRate*2,A.sampleRate);const d=NB.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+   hF=A.createBiquadFilter();hF.type='lowpass';hF.frequency.value=300;hG=A.createGain();hG.gain.value=0;hI=A.createGain();hI.gain.value=0;
+   [[73.42,'sine',0,.9],[110,'sine',-4,.55],[146.83,'triangle',3,.3],[220,'sine',5,.12]].forEach(([f,ty,dt,v])=>{const o=A.createOscillator(),g=A.createGain();o.type=ty;o.frequency.value=f;o.detune.value=dt;g.gain.value=v;o.connect(g);g.connect(hF);o.start()});
+   hF.connect(hG);hG.connect(hI);hI.connect(M)}
+  A.resume().catch(()=>{});
+ }catch(e){console.warn('sound off',e);A=null;return 0}
+ try{const T=A.currentTime+.1,at=s=>T+s;
+  hI.gain.cancelScheduledValues(A.currentTime);hI.gain.setValueAtTime(hI.gain.value,A.currentTime);hI.gain.linearRampToValueAtTime(1,T+2.5);
+  // 0-3.2s "And Claude said,": breath and a D3/A3 pad follow the text's own fade in/out
+  ng(at(0),3.2,say,{f0:900,f1:1500,q:.7,v:.07});tn(at(0),3.2,146.83,146.83,say,{v:.05});tn(at(0),3.2,220,220,say,{v:.03,dt:4});
+  // 2.3-3.2s riser into the reveal
+  ng(at(2.3),.9,x=>x*x,{f0:500,f1:7000,q:1.2,v:.14});tn(at(2.3),.9,220,880,x=>x*x,{ty:'triangle',v:.05});
+  // t=0 (3.2s): hands sweep in for 2.2s; loudness = their speed, pan = their x position
+  [-1,1].forEach(s=>{const pf=x=>s*Math.min(1,(7*(1-eo(x))+.85)/6);ng(at(3.2),2.2,x=>(1-x)*(1-x),{f0:3200,f1:500,q:.9,v:.28,pf});tn(at(3.2),2.2,260,110,x=>(1-x)*(1-x),{v:.07,pf})});
+  // logo blooms t=.8-2.4s: pitch and loudness follow its scale
+  {const g=u=>u<1?eo(u):Math.exp(-(u-1)*4),fq=u=>140*(1+2.4*eo(u));tn(at(4),3,0,0,x=>g(x*1.875),{fc:x=>fq(x*1.875),v:.1});tn(at(4),3,0,0,x=>g(x*1.875),{fc:x=>2*fq(x*1.875),ty:'triangle',v:.04})}
+  // t=2.2s: hands settle
+  tn(at(5.4),.7,80,38,x=>Math.exp(-x*6),{v:.45});bl(at(5.4),293.66,.07,-.25,2.2);bl(at(5.4)+.04,440,.06,.25,2.2);bl(at(5.4)+.08,739.99,.05,0,2.2);
+ }catch(e){console.warn('sound cues',e)}
+ return .1},
+ blast(){if(!A)return;try{const t=A.currentTime+.02;
+  ng(t,.012,x=>1-x,{f0:6e3,ty:'highpass',v:.5});                                     // crack
+  tn(t,1.4,110,30,x=>Math.exp(-x*4.5),{v:1});                                       // boom, decays like the camera shake exp(-3b)
+  ng(t,1.6,x=>Math.exp(-x*4.8),{f0:420,f1:70,ty:'lowpass',q:.7,v:.9});               // rumble = the shake
+  ng(t,.9,x=>(1-x)*(1-x),{f0:9e3,f1:300,ty:'lowpass',q:.5,v:.5});                   // air under the 900ms flash
+  tn(t,.449,180,1,x=>Math.sin(Math.PI*x)*Math.exp(-x),{fc:x=>180+720*Math.sin(Math.PI*x),ty:'triangle',v:.18}); // logo balloon pulse (0-.449s)
+  ng(t,1.64,x=>1-x,{f0:400,f1:7e3,q:2.5,v:.45});                                     // shockwave ring: radius grows, opacity fades over 1.64s
+  [146.83,220,293.66,369.99,440,587.33,1174.66].forEach((f,i)=>tn(t,2.4,f,f,x=>(1-x)*Math.min(1,x*40),{ty:i%2?'triangle':'sine',v:i>5?.03:.075,p:(i-3)*.25,dt:i*2-5})); // glow chord, linear 2.4s decay like gl
+  for(let i=0;i<64;i++){const b=3.2*(1-Math.sqrt(1-(i+Math.random())/64));bl(t+b,nt(1174.66,Math.random()*8|0),.05*(1-b/3.2),Math.random()*1.6-.8,.35)} // sparkle = particles, thinning with their opacity
+  const go=t+.45;let k=0;[...'Let There Be Thought'].forEach((c,i)=>{if(c===' ')return;bl(go+i*.06+.09,nt(293.66,k),.06+k*.0035,i/19*1.4-.7,1.1);k++}); // one note per letter, panned across the screen
+  ng(go+1.7,2.6,x=>{const u=x*2.6;return u<1.6?u/1.6:Math.exp(-(u-1.6)*3)},{f0:3500,f1:9e3,q:.8,v:.05});bl(go+2.2,880,.05,0,2); // tagline
+  bl(go+3.1,2349.32,.03,0,.6); // small print
+ }catch(e){console.warn('sound blast',e)}},
+ tink(o){if(A)try{bl(A.currentTime+.01,o?1760:1318.51,.025,0,.9)}catch(e){}},
+ frame(gl,p){if(!A)return;const t=A.currentTime;hG.gain.cancelScheduledValues(t);hG.gain.setTargetAtTime((.045+.012*gl)*(1+.25*p),t,.04);hF.frequency.cancelScheduledValues(t);hF.frequency.setTargetAtTime(220+gl*260,t,.05)}}})();
+function begin(){const d=snd.start();setTimeout(intro,d*1e3);return performance.now()+d*1e3}
 addEventListener('pointermove',e=>{mx=e.clientX/innerWidth*2-1;my=e.clientY/innerHeight*2-1});
-function blow(){if(blown>=0)return;blown=performance.now();$('#hint').style.opacity=0;
+function blow(){if(blown>=0)return;blown=performance.now();snd.blast();$('#hint').style.opacity=0;
  for(let i=0;i<N;i++){const a=Math.random()*6.283,b=Math.acos(2*Math.random()-1),s=1.5+Math.random()*7;pp.set([0,0,0],i*3);pv.set([Math.sin(b)*Math.cos(a)*s,Math.sin(b)*Math.sin(a)*s,Math.cos(b)*s],i*3)}
  const f=$('#flash');f.animate([{opacity:.95},{opacity:0}],{duration:900,easing:'ease-out'});
  setTimeout(()=>txt.classList.add('go'),450)}
-function intro(){const e=$('#say');e.classList.remove('on');void e.offsetWidth;e.classList.add('on')}intro();
-function reset(){intro();txt.classList.remove('go');blown=-1;t0=performance.now();P.material.opacity=0;wave.material.opacity=0;$('#hint').style.opacity=1}
-addEventListener('pointerdown',()=>{if(blown<0){if((performance.now()-t0)/1e3>INTRO+1)blow()}else if(performance.now()-blown>4500)reset()});
+function intro(){const e=$('#say');e.classList.remove('on');void e.offsetWidth;e.classList.add('on')}
+function reset(){txt.classList.remove('go');blown=-1;t0=begin();P.material.opacity=0;wave.material.opacity=0;$('#hint').style.opacity=1}
+addEventListener('pointerdown',()=>{if(!started){started=true;t0=begin();$('#gate').style.opacity=0;return}if(blown<0){if((performance.now()-t0)/1e3>INTRO+1)blow()}else if(performance.now()-blown>4500)reset()});
 const ease=x=>1-Math.pow(1-Math.min(1,Math.max(0,x)),3);let last=performance.now();
 R.setAnimationLoop(()=>{const n=performance.now(),dt=Math.min(.05,(n-last)/1e3);last=n;const t=(n-t0)/1e3-INTRO,b=blown<0?-1:(n-blown)/1e3;
  E.visible=A.visible=G.visible=t>=0;const k=ease(t/2.2);A.position.x=-.85-(1-k)*7;G.position.x=.85+(1-k)*7;
@@ -76,7 +125,7 @@ R.setAnimationLoop(()=>{const n=performance.now(),dt=Math.min(.05,(n-last)/1e3);
  rings.forEach((r,i)=>{r.rotation.z+=dt*(.6+i*.5);r.rotation.x+=dt*.3});cage.rotation.y-=dt*.4;
  A.rotation.y+=(mx*.3-A.rotation.y)*dt*4;G.rotation.y+=(mx*.3-G.rotation.y)*dt*4;A.rotation.x=G.rotation.x+=(my*.2-G.rotation.x)*dt*4;
  C.position.x+=(mx*.9-C.position.x)*Math.min(1,dt*3);C.position.y+=(-1.0-my*.5-C.position.y)*Math.min(1,dt*3);C.lookAt(0,-1.0,0);
- {const p=Math.sin(n/380);logo.rotation.y=n/450;logo.material[0].emissiveIntensity=.55+p*.25;lg.intensity=2.2+p*1.2}
+ {const p=Math.sin(n/380);logo.rotation.y=n/450;logo.material[0].emissiveIntensity=.55+p*.25;lg.intensity=2.2+p*1.2;snd.frame(gl,p);const ph=Math.floor(n/450/Math.PI);if(ph!==lph){lph=ph;if(t>=0)snd.tink(ph&1)}}
  A.position.y=A.userData.y+Math.sin(n/900)*.02;G.position.y=G.userData.y+Math.sin(n/900+1.6)*.02;A.rotation.z=Math.sin(n/1300)*.006;G.rotation.z=-Math.sin(n/1300+2)*.006;
  comp?comp.render():R.render(S,C)});
 Promise.all(['EffectComposer','RenderPass','UnrealBloomPass','OutputPass'].map(f=>import('three/addons/postprocessing/'+f+'.js'))).then(([a,b,c,d])=>{const cp=new a.EffectComposer(R);cp.addPass(new b.RenderPass(S,C));cp.addPass(new c.UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),.5,.5,.9));cp.addPass(new d.OutputPass());cp.setSize(innerWidth,innerHeight);R.toneMapping=THREE.NoToneMapping;comp=cp}).catch(e=>console.warn('bloom off',e));
