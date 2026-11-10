@@ -37,7 +37,11 @@ const glowL=new THREE.PointLight(0x7fe3ff,0,14,1.6);S.add(glowL);
 const MT={"L":{"w":1084,"h":463,"tx":1079,"ty":247,"oy":100},"R":{"w":1051,"h":508,"tx":4,"ty":211,"oy":123},"ref":363},TL=new THREE.TextureLoader(),WS=.00521,tex=(f,c)=>{const t=TL.load(f);if(c)t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t};
 function hand(n){const m=MT[n],g=new THREE.Group(),map=tex('hand_'+n+'.png',1);
  const mesh=new THREE.Mesh(new THREE.PlaneGeometry(m.w*WS,m.h*WS,170,90),new THREE.MeshStandardMaterial({map,emissiveMap:map,emissive:0xffffff,emissiveIntensity:.8,normalMap:tex('normal_'+n+'.png'),normalScale:new THREE.Vector2(1.3,1.3),displacementMap:tex('height_'+n+'.png'),displacementScale:.14,displacementBias:-.02,roughness:.7,toneMapped:false,transparent:true,alphaTest:.02,depthWrite:false,side:THREE.DoubleSide}));
- mesh.position.set((m.w/2-m.tx)*WS,-(m.h/2-m.ty)*WS,0);g.add(mesh);g.position.y=(MT.ref-(m.oy+m.ty))*WS;return g}
+ mesh.position.set((m.w/2-m.tx)*WS,-(m.h/2-m.ty)*WS,0);g.add(mesh);
+ // thickness: the same silhouette stacked behind the front surface, darker with depth, so a tilt shows a solid edge instead of paper
+ const NL=16,TH=.34,pg=new THREE.PlaneGeometry(m.w*WS,m.h*WS);
+ for(let k=1;k<=NL;k++){const s=.8-.5*k/NL,b=new THREE.Mesh(pg,new THREE.MeshBasicMaterial({map,color:new THREE.Color(s,s*.95,s*.9),alphaTest:.5,alphaToCoverage:true,toneMapped:false}));b.position.set(mesh.position.x,mesh.position.y,-.02-k*TH/NL);g.add(b)}
+ g.position.y=(MT.ref-(m.oy+m.ty))*WS;return g}
 const A=hand('L'),G=hand('R');A.userData.y=A.position.y;G.userData.y=G.position.y;S.add(A,G);
 function glowTex(){const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),g=x.createRadialGradient(64,64,0,64,64,64);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.25,'rgba(140,230,255,.55)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)}
 const LW=1.1,LR=.26,sh=new THREE.Shape();sh.absarc(-LW/2+LR,-LW/2+LR,LR,Math.PI,1.5*Math.PI);sh.absarc(LW/2-LR,-LW/2+LR,LR,1.5*Math.PI,2*Math.PI);sh.absarc(LW/2-LR,LW/2-LR,LR,0,.5*Math.PI);sh.absarc(-LW/2+LR,LW/2-LR,LR,.5*Math.PI,Math.PI);
